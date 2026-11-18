@@ -21,5 +21,6 @@ def shortest_path_arc_ids(graph: nx.MultiDiGraph, source: int, target: int) -> l
         options = graph.get_edge_data(start, end)
         if not options:
             raise nx.NetworkXNoPath(f"no edge data for {start}->{end}")
-        result.append(int(min(options.values(), key=lambda data: data["length_m"])["arc_id"]))
+        selected = min(options.values(), key=lambda data: (data["length_m"], data["arc_id"]))
+        result.append(int(selected["arc_id"]))
     return result
