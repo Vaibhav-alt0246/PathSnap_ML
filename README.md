@@ -1,27 +1,53 @@
 # PathSnap
 
-PathSnap is a GPS map-matching system that identifies travelled road segments from noisy GPS observations and a directed road network.
+PathSnap is a Python machine-learning project for map matching: identifying travelled segments from noisy GPS observations and a directed, trip-specific road network.
 
-## Architecture
+This repository is a development foundation. Domain-specific ML, graph, HMM, API, and UI implementations are staged behind typed interfaces and are not claimed to be complete.
 
-Data loading and coordinate projection → candidate generation → feature engineering → ML candidate classification → HMM/Viterbi decoding → evaluation → FastAPI → Streamlit/Folium visualisation.
+## Data contract
 
-## Team responsibilities
+Each trip contains `.track` (longitude, latitude, timestamp), `.nodes` (longitude, latitude), `.arcs` (from_node, to_node), and `.route` (ordered reference arc IDs). Node and arc IDs are row indices and local to each trip. `.route` is training/evaluation-only and must never be loaded by inference. Metric projection is required for geometric calculations; raw longitude/latitude are not model features.
 
-- **Member A:** data loading, projection, candidates, development labels, features, EDA, and Folium maps.
-- **Member B:** five or more ML models, trip-grouped cross-validation, comparison, metrics, Bayesian optimisation, and artifact export.
-- **Member C:** integration, road graph/shortest paths, HMM/Viterbi, FastAPI, Streamlit, and testing.
+Candidate tables use `point_idx`, `arc_id`, `distance_m`, `projection_fraction`, `projected_x`, `projected_y`, and `arc_length_m`; training adds `label`. Identity and label columns must be excluded from model features, and probability rows retain candidate order.
 
-## Installation
+## Architecture and ownership
+
+- Member A: loading, projection, candidate generation, route alignment, and features.
+- Member B: models, trip-grouped cross-validation, comparison, metrics, and optimization.
+- Member C: graph/shortest paths, HMM/Viterbi, inference, FastAPI, Streamlit, and integration.
+
+The package boundaries are under `src/`: `data`, `candidates`, `labels`, `features`, `models`, `tuning`, `graph`, `hmm`, `evaluation`, `pipeline`, and `visualization`.
+
+## Shared interfaces
+
+The agreed entry points are `load_trip`, `generate_candidates`, `align_route_labels`, `build_features`, `train_models`, `compare_models`, `optimize_best_model`, `predict_proba`, `build_road_graph`, `decode`, `evaluate_predictions`, and `predict_trip`. Their typed signatures and contracts are documented in module docstrings. Unimplemented boundaries raise `NotImplementedError` rather than pretending to work.
+
+## Setup and configuration
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
+python -m pip install -e .
 ```
 
-The dataset root remains unset until the dataset schema and location are confirmed. This is an initial scaffold; no complete pipeline or experimental results are claimed.
+`config/settings.yaml` is the single configuration source. Dataset and metric CRS paths are intentionally `null` until confirmed; do not commit private data or credentials.
 
-## Dataset format
+## Testing
 
-To be documented after confirming observation fields, road-network format, CRS, and reference-route availability.
+```bash
+python -m compileall -q api src ui tests
+pytest
+```
+
+Tests cover the trip and candidate contracts and training-route requirements without requiring a dataset.
+
+## Development workflow
+
+`main` is the shared integration branch. Use `member-a-data`, `member-b-ml`, or `member-c-integration` for owned work and submit pull requests into `main`; do not merge another member's work automatically or rewrite history. See `docs/DEVELOPMENT_WORKFLOW.md`.
+
+The intended two-laptop deployment is FastAPI on Laptop 1 and Streamlit/Folium on Laptop 2. Configure the UI API base URL for the actual local network environment; no address is assumed here.
+
+## Current status
+
+Completed: repository/package foundation, configuration boundary, data/candidate contracts, API/UI placeholders, and dataset-independent tests. Planned: confirm the dataset parser/CRS, then implement Member A/B/C modules behind these interfaces.

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pathsnap-ml"
+version = "0.1.0"
+description = "GPS map matching with machine learning and road-network inference"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "networkx",
+    "pyproj",
+    "shapely",
+    "optuna",
+    "joblib",
+    "fastapi",
+    "uvicorn",
+    "streamlit",
+    "streamlit-folium",
+    "folium",
+    "matplotlib",
+    "requests",
+    "pyyaml",
+]
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "api*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
