@@ -1,0 +1,844 @@
+{
+  "dataset_name": "PathSnap_Member_A_Training_Candidates",
+  "generated_timestamp": "2026-11-18T05:55:30Z",
+  "total_trips": 80,
+  "total_candidate_rows": 1514674,
+  "total_positives": 185461,
+  "total_negatives": 1329213,
+  "positive_rate": 0.1224,
+  "feature_count": 24,
+  "feature_columns": [
+    "distance_m",
+    "distance_to_closest_cand",
+    "distance_ratio_closest",
+    "dist_rank",
+    "cand_count_for_point",
+    "projection_fraction",
+    "dist_to_segment_start_m",
+    "dist_to_segment_end_m",
+    "arc_length_m",
+    "gps_heading_deg",
+    "road_bearing_deg",
+    "heading_bearing_diff_deg",
+    "heading_bearing_cos_sim",
+    "is_low_speed",
+    "gps_delta_t_s",
+    "gps_step_distance_m",
+    "gps_speed_mps",
+    "gps_accel_mps2",
+    "speed_ratio_to_mean",
+    "u_in_degree",
+    "u_out_degree",
+    "v_in_degree",
+    "v_out_degree",
+    "has_reverse_twin"
+  ],
+  "identifier_columns": [
+    "trip_id",
+    "point_idx",
+    "arc_id"
+  ],
+  "target_column": "label",
+  "trip_metrics": [
+    {
+      "trip_id": "00000001",
+      "num_gps": 1315,
+      "num_candidates": 12635,
+      "positives": 1315,
+      "negatives": 11320,
+      "recall": 1.0,
+      "cands_per_gps": 9.608365019011407,
+      "elapsed_s": 0.459
+    },
+    {
+      "trip_id": "00000002",
+      "num_gps": 7243,
+      "num_candidates": 66727,
+      "positives": 6553,
+      "negatives": 60174,
+      "recall": 0.9047356067927654,
+      "cands_per_gps": 9.212619080491509,
+      "elapsed_s": 0.653
+    },
+    {
+      "trip_id": "00000003",
+      "num_gps": 821,
+      "num_candidates": 11128,
+      "positives": 821,
+      "negatives": 10307,
+      "recall": 1.0,
+      "cands_per_gps": 13.554202192448233,
+      "elapsed_s": 0.083
+    },
+    {
+      "trip_id": "00000004",
+      "num_gps": 1064,
+      "num_candidates": 7369,
+      "positives": 1061,
+      "negatives": 6308,
+      "recall": 0.9971804511278195,
+      "cands_per_gps": 6.9257518796992485,
+      "elapsed_s": 0.125
+    },
+    {
+      "trip_id": "00000005",
+      "num_gps": 1045,
+      "num_candidates": 3132,
+      "positives": 1045,
+      "negatives": 2087,
+      "recall": 1.0,
+      "cands_per_gps": 2.9971291866028706,
+      "elapsed_s": 0.056
+    },
+    {
+      "trip_id": "00000006",
+      "num_gps": 1450,
+      "num_candidates": 12771,
+      "positives": 1450,
+      "negatives": 11321,
+      "recall": 1.0,
+      "cands_per_gps": 8.807586206896552,
+      "elapsed_s": 0.144
+    },
+    {
+      "trip_id": "00000008",
+      "num_gps": 3093,
+      "num_candidates": 34946,
+      "positives": 3065,
+      "negatives": 31881,
+      "recall": 0.9909473003556418,
+      "cands_per_gps": 11.298415777562237,
+      "elapsed_s": 0.237
+    },
+    {
+      "trip_id": "00000010",
+      "num_gps": 2711,
+      "num_candidates": 34848,
+      "positives": 2710,
+      "negatives": 32138,
+      "recall": 0.99963113242346,
+      "cands_per_gps": 12.854297307266691,
+      "elapsed_s": 0.268
+    },
+    {
+      "trip_id": "00000011",
+      "num_gps": 2828,
+      "num_candidates": 15812,
+      "positives": 2828,
+      "negatives": 12984,
+      "recall": 1.0,
+      "cands_per_gps": 5.591230551626591,
+      "elapsed_s": 0.405
+    },
+    {
+      "trip_id": "00000012",
+      "num_gps": 1608,
+      "num_candidates": 6329,
+      "positives": 1608,
+      "negatives": 4721,
+      "recall": 1.0,
+      "cands_per_gps": 3.935945273631841,
+      "elapsed_s": 0.158
+    },
+    {
+      "trip_id": "00000013",
+      "num_gps": 2580,
+      "num_candidates": 20339,
+      "positives": 2580,
+      "negatives": 17759,
+      "recall": 1.0,
+      "cands_per_gps": 7.883333333333334,
+      "elapsed_s": 0.929
+    },
+    {
+      "trip_id": "00000014",
+      "num_gps": 448,
+      "num_candidates": 5224,
+      "positives": 448,
+      "negatives": 4776,
+      "recall": 1.0,
+      "cands_per_gps": 11.660714285714286,
+      "elapsed_s": 0.055
+    },
+    {
+      "trip_id": "00000016",
+      "num_gps": 1305,
+      "num_candidates": 16206,
+      "positives": 1305,
+      "negatives": 14901,
+      "recall": 1.0,
+      "cands_per_gps": 12.418390804597701,
+      "elapsed_s": 0.135
+    },
+    {
+      "trip_id": "00000018",
+      "num_gps": 379,
+      "num_candidates": 4321,
+      "positives": 379,
+      "negatives": 3942,
+      "recall": 1.0,
+      "cands_per_gps": 11.401055408970976,
+      "elapsed_s": 0.054
+    },
+    {
+      "trip_id": "00000019",
+      "num_gps": 2354,
+      "num_candidates": 20744,
+      "positives": 2315,
+      "negatives": 18429,
+      "recall": 0.9834324553950722,
+      "cands_per_gps": 8.812234494477485,
+      "elapsed_s": 0.496
+    },
+    {
+      "trip_id": "00000020",
+      "num_gps": 2353,
+      "num_candidates": 8960,
+      "positives": 2321,
+      "negatives": 6639,
+      "recall": 0.9864003399915002,
+      "cands_per_gps": 3.8079048023799404,
+      "elapsed_s": 0.145
+    },
+    {
+      "trip_id": "00000021",
+      "num_gps": 15783,
+      "num_candidates": 50511,
+      "positives": 15779,
+      "negatives": 34732,
+      "recall": 0.9997465627573972,
+      "cands_per_gps": 3.2003421402775136,
+      "elapsed_s": 1.219
+    },
+    {
+      "trip_id": "00000022",
+      "num_gps": 474,
+      "num_candidates": 5806,
+      "positives": 474,
+      "negatives": 5332,
+      "recall": 1.0,
+      "cands_per_gps": 12.248945147679326,
+      "elapsed_s": 0.093
+    },
+    {
+      "trip_id": "00000024",
+      "num_gps": 801,
+      "num_candidates": 5761,
+      "positives": 801,
+      "negatives": 4960,
+      "recall": 1.0,
+      "cands_per_gps": 7.192259675405743,
+      "elapsed_s": 0.151
+    },
+    {
+      "trip_id": "00000025",
+      "num_gps": 1179,
+      "num_candidates": 10721,
+      "positives": 1179,
+      "negatives": 9542,
+      "recall": 1.0,
+      "cands_per_gps": 9.093299406276506,
+      "elapsed_s": 0.226
+    },
+    {
+      "trip_id": "00000026",
+      "num_gps": 361,
+      "num_candidates": 3720,
+      "positives": 361,
+      "negatives": 3359,
+      "recall": 1.0,
+      "cands_per_gps": 10.304709141274238,
+      "elapsed_s": 0.047
+    },
+    {
+      "trip_id": "00000027",
+      "num_gps": 694,
+      "num_candidates": 5354,
+      "positives": 694,
+      "negatives": 4660,
+      "recall": 1.0,
+      "cands_per_gps": 7.714697406340058,
+      "elapsed_s": 0.054
+    },
+    {
+      "trip_id": "00000028",
+      "num_gps": 3565,
+      "num_candidates": 23425,
+      "positives": 3540,
+      "negatives": 19885,
+      "recall": 0.9929873772791024,
+      "cands_per_gps": 6.570827489481066,
+      "elapsed_s": 0.774
+    },
+    {
+      "trip_id": "00000029",
+      "num_gps": 733,
+      "num_candidates": 8310,
+      "positives": 733,
+      "negatives": 7577,
+      "recall": 1.0,
+      "cands_per_gps": 11.336971350613915,
+      "elapsed_s": 0.117
+    },
+    {
+      "trip_id": "00000031",
+      "num_gps": 4245,
+      "num_candidates": 33216,
+      "positives": 4245,
+      "negatives": 28971,
+      "recall": 1.0,
+      "cands_per_gps": 7.8247349823321555,
+      "elapsed_s": 0.815
+    },
+    {
+      "trip_id": "00000032",
+      "num_gps": 2464,
+      "num_candidates": 17205,
+      "positives": 2464,
+      "negatives": 14741,
+      "recall": 1.0,
+      "cands_per_gps": 6.982548701298701,
+      "elapsed_s": 2.159
+    },
+    {
+      "trip_id": "00000033",
+      "num_gps": 5844,
+      "num_candidates": 43221,
+      "positives": 1931,
+      "negatives": 41290,
+      "recall": 0.3304243668720055,
+      "cands_per_gps": 7.395790554414784,
+      "elapsed_s": 1.162
+    },
+    {
+      "trip_id": "00000034",
+      "num_gps": 3614,
+      "num_candidates": 27658,
+      "positives": 3611,
+      "negatives": 24047,
+      "recall": 0.9991698948533481,
+      "cands_per_gps": 7.653016048699502,
+      "elapsed_s": 1.384
+    },
+    {
+      "trip_id": "00000035",
+      "num_gps": 1643,
+      "num_candidates": 19475,
+      "positives": 1643,
+      "negatives": 17832,
+      "recall": 1.0,
+      "cands_per_gps": 11.85331710286062,
+      "elapsed_s": 0.702
+    },
+    {
+      "trip_id": "00000036",
+      "num_gps": 1368,
+      "num_candidates": 12821,
+      "positives": 1368,
+      "negatives": 11453,
+      "recall": 1.0,
+      "cands_per_gps": 9.372076023391813,
+      "elapsed_s": 0.342
+    },
+    {
+      "trip_id": "00000037",
+      "num_gps": 677,
+      "num_candidates": 7519,
+      "positives": 677,
+      "negatives": 6842,
+      "recall": 1.0,
+      "cands_per_gps": 11.106351550960119,
+      "elapsed_s": 0.222
+    },
+    {
+      "trip_id": "00000038",
+      "num_gps": 1287,
+      "num_candidates": 14246,
+      "positives": 1287,
+      "negatives": 12959,
+      "recall": 1.0,
+      "cands_per_gps": 11.069153069153069,
+      "elapsed_s": 0.442
+    },
+    {
+      "trip_id": "00000039",
+      "num_gps": 363,
+      "num_candidates": 2525,
+      "positives": 363,
+      "negatives": 2162,
+      "recall": 1.0,
+      "cands_per_gps": 6.9559228650137745,
+      "elapsed_s": 0.123
+    },
+    {
+      "trip_id": "00000041",
+      "num_gps": 1019,
+      "num_candidates": 9389,
+      "positives": 1018,
+      "negatives": 8371,
+      "recall": 0.9990186457311089,
+      "cands_per_gps": 9.213935230618253,
+      "elapsed_s": 0.356
+    },
+    {
+      "trip_id": "00000042",
+      "num_gps": 7739,
+      "num_candidates": 64838,
+      "positives": 7739,
+      "negatives": 57099,
+      "recall": 1.0,
+      "cands_per_gps": 8.378085023904898,
+      "elapsed_s": 5.174
+    },
+    {
+      "trip_id": "00000043",
+      "num_gps": 2322,
+      "num_candidates": 17418,
+      "positives": 2167,
+      "negatives": 15251,
+      "recall": 0.9332472006890612,
+      "cands_per_gps": 7.501291989664082,
+      "elapsed_s": 1.033
+    },
+    {
+      "trip_id": "00000044",
+      "num_gps": 546,
+      "num_candidates": 5155,
+      "positives": 546,
+      "negatives": 4609,
+      "recall": 1.0,
+      "cands_per_gps": 9.441391941391942,
+      "elapsed_s": 0.072
+    },
+    {
+      "trip_id": "00000045",
+      "num_gps": 640,
+      "num_candidates": 3766,
+      "positives": 640,
+      "negatives": 3126,
+      "recall": 1.0,
+      "cands_per_gps": 5.884375,
+      "elapsed_s": 0.085
+    },
+    {
+      "trip_id": "00000046",
+      "num_gps": 1401,
+      "num_candidates": 7875,
+      "positives": 1401,
+      "negatives": 6474,
+      "recall": 1.0,
+      "cands_per_gps": 5.620985010706638,
+      "elapsed_s": 0.1
+    },
+    {
+      "trip_id": "00000047",
+      "num_gps": 1272,
+      "num_candidates": 13613,
+      "positives": 1272,
+      "negatives": 12341,
+      "recall": 1.0,
+      "cands_per_gps": 10.702044025157234,
+      "elapsed_s": 0.258
+    },
+    {
+      "trip_id": "00000048",
+      "num_gps": 1240,
+      "num_candidates": 8736,
+      "positives": 1240,
+      "negatives": 7496,
+      "recall": 1.0,
+      "cands_per_gps": 7.04516129032258,
+      "elapsed_s": 0.183
+    },
+    {
+      "trip_id": "00000050",
+      "num_gps": 518,
+      "num_candidates": 4277,
+      "positives": 518,
+      "negatives": 3759,
+      "recall": 1.0,
+      "cands_per_gps": 8.256756756756756,
+      "elapsed_s": 0.068
+    },
+    {
+      "trip_id": "00000051",
+      "num_gps": 984,
+      "num_candidates": 9456,
+      "positives": 984,
+      "negatives": 8472,
+      "recall": 1.0,
+      "cands_per_gps": 9.609756097560975,
+      "elapsed_s": 0.161
+    },
+    {
+      "trip_id": "00000053",
+      "num_gps": 1304,
+      "num_candidates": 14752,
+      "positives": 1301,
+      "negatives": 13451,
+      "recall": 0.9976993865030674,
+      "cands_per_gps": 11.312883435582823,
+      "elapsed_s": 0.803
+    },
+    {
+      "trip_id": "00000054",
+      "num_gps": 19313,
+      "num_candidates": 67758,
+      "positives": 2043,
+      "negatives": 65715,
+      "recall": 0.1057836690312225,
+      "cands_per_gps": 3.5084140216434525,
+      "elapsed_s": 4.338
+    },
+    {
+      "trip_id": "00000055",
+      "num_gps": 2472,
+      "num_candidates": 13654,
+      "positives": 2472,
+      "negatives": 11182,
+      "recall": 1.0,
+      "cands_per_gps": 5.523462783171521,
+      "elapsed_s": 0.92
+    },
+    {
+      "trip_id": "00000057",
+      "num_gps": 1645,
+      "num_candidates": 16144,
+      "positives": 1633,
+      "negatives": 14511,
+      "recall": 0.9927051671732523,
+      "cands_per_gps": 9.813981762917933,
+      "elapsed_s": 0.347
+    },
+    {
+      "trip_id": "00000058",
+      "num_gps": 599,
+      "num_candidates": 7938,
+      "positives": 597,
+      "negatives": 7341,
+      "recall": 0.996661101836394,
+      "cands_per_gps": 13.252086811352253,
+      "elapsed_s": 0.214
+    },
+    {
+      "trip_id": "00000060",
+      "num_gps": 854,
+      "num_candidates": 11037,
+      "positives": 854,
+      "negatives": 10183,
+      "recall": 1.0,
+      "cands_per_gps": 12.923887587822014,
+      "elapsed_s": 0.241
+    },
+    {
+      "trip_id": "00000061",
+      "num_gps": 1430,
+      "num_candidates": 18537,
+      "positives": 1349,
+      "negatives": 17188,
+      "recall": 0.9433566433566434,
+      "cands_per_gps": 12.962937062937064,
+      "elapsed_s": 0.32
+    },
+    {
+      "trip_id": "00000062",
+      "num_gps": 3378,
+      "num_candidates": 32746,
+      "positives": 3378,
+      "negatives": 29368,
+      "recall": 1.0,
+      "cands_per_gps": 9.693901716992302,
+      "elapsed_s": 0.96
+    },
+    {
+      "trip_id": "00000063",
+      "num_gps": 2781,
+      "num_candidates": 24882,
+      "positives": 2781,
+      "negatives": 22101,
+      "recall": 1.0,
+      "cands_per_gps": 8.947141316073354,
+      "elapsed_s": 0.64
+    },
+    {
+      "trip_id": "00000064",
+      "num_gps": 2093,
+      "num_candidates": 15787,
+      "positives": 2092,
+      "negatives": 13695,
+      "recall": 0.9995222169135213,
+      "cands_per_gps": 7.542761586239847,
+      "elapsed_s": 0.832
+    },
+    {
+      "trip_id": "00000066",
+      "num_gps": 4325,
+      "num_candidates": 15848,
+      "positives": 4065,
+      "negatives": 11783,
+      "recall": 0.9398843930635838,
+      "cands_per_gps": 3.664277456647399,
+      "elapsed_s": 0.624
+    },
+    {
+      "trip_id": "00000068",
+      "num_gps": 747,
+      "num_candidates": 7413,
+      "positives": 746,
+      "negatives": 6667,
+      "recall": 0.998661311914324,
+      "cands_per_gps": 9.923694779116467,
+      "elapsed_s": 0.119
+    },
+    {
+      "trip_id": "00000069",
+      "num_gps": 2067,
+      "num_candidates": 23081,
+      "positives": 2064,
+      "negatives": 21017,
+      "recall": 0.9985486211901307,
+      "cands_per_gps": 11.166424770198356,
+      "elapsed_s": 1.405
+    },
+    {
+      "trip_id": "00000070",
+      "num_gps": 2076,
+      "num_candidates": 15414,
+      "positives": 2076,
+      "negatives": 13338,
+      "recall": 1.0,
+      "cands_per_gps": 7.42485549132948,
+      "elapsed_s": 0.287
+    },
+    {
+      "trip_id": "00000071",
+      "num_gps": 850,
+      "num_candidates": 6889,
+      "positives": 850,
+      "negatives": 6039,
+      "recall": 1.0,
+      "cands_per_gps": 8.104705882352942,
+      "elapsed_s": 0.167
+    },
+    {
+      "trip_id": "00000072",
+      "num_gps": 969,
+      "num_candidates": 10024,
+      "positives": 859,
+      "negatives": 9165,
+      "recall": 0.8864809081527347,
+      "cands_per_gps": 10.344685242518059,
+      "elapsed_s": 0.151
+    },
+    {
+      "trip_id": "00000074",
+      "num_gps": 1929,
+      "num_candidates": 16850,
+      "positives": 1929,
+      "negatives": 14921,
+      "recall": 1.0,
+      "cands_per_gps": 8.73509590461379,
+      "elapsed_s": 0.499
+    },
+    {
+      "trip_id": "00000075",
+      "num_gps": 1628,
+      "num_candidates": 12733,
+      "positives": 1628,
+      "negatives": 11105,
+      "recall": 1.0,
+      "cands_per_gps": 7.8212530712530715,
+      "elapsed_s": 0.195
+    },
+    {
+      "trip_id": "00000078",
+      "num_gps": 2909,
+      "num_candidates": 24998,
+      "positives": 2908,
+      "negatives": 22090,
+      "recall": 0.9996562392574768,
+      "cands_per_gps": 8.59333104159505,
+      "elapsed_s": 2.345
+    },
+    {
+      "trip_id": "00000079",
+      "num_gps": 689,
+      "num_candidates": 8914,
+      "positives": 689,
+      "negatives": 8225,
+      "recall": 1.0,
+      "cands_per_gps": 12.937590711175616,
+      "elapsed_s": 0.283
+    },
+    {
+      "trip_id": "00000080",
+      "num_gps": 2510,
+      "num_candidates": 13430,
+      "positives": 2509,
+      "negatives": 10921,
+      "recall": 0.999601593625498,
+      "cands_per_gps": 5.350597609561753,
+      "elapsed_s": 0.311
+    },
+    {
+      "trip_id": "00000081",
+      "num_gps": 3224,
+      "num_candidates": 23400,
+      "positives": 3130,
+      "negatives": 20270,
+      "recall": 0.9708436724565757,
+      "cands_per_gps": 7.258064516129032,
+      "elapsed_s": 1.375
+    },
+    {
+      "trip_id": "00000082",
+      "num_gps": 4268,
+      "num_candidates": 31300,
+      "positives": 4268,
+      "negatives": 27032,
+      "recall": 1.0,
+      "cands_per_gps": 7.3336457357075915,
+      "elapsed_s": 0.758
+    },
+    {
+      "trip_id": "00000083",
+      "num_gps": 1507,
+      "num_candidates": 17315,
+      "positives": 1507,
+      "negatives": 15808,
+      "recall": 1.0,
+      "cands_per_gps": 11.489714664897146,
+      "elapsed_s": 0.32
+    },
+    {
+      "trip_id": "00000084",
+      "num_gps": 16031,
+      "num_candidates": 89413,
+      "positives": 15877,
+      "negatives": 73536,
+      "recall": 0.9903936123760214,
+      "cands_per_gps": 5.577506081966191,
+      "elapsed_s": 4.809
+    },
+    {
+      "trip_id": "00000085",
+      "num_gps": 1092,
+      "num_candidates": 7716,
+      "positives": 1082,
+      "negatives": 6634,
+      "recall": 0.9908424908424909,
+      "cands_per_gps": 7.065934065934066,
+      "elapsed_s": 0.128
+    },
+    {
+      "trip_id": "00000086",
+      "num_gps": 4143,
+      "num_candidates": 19230,
+      "positives": 4143,
+      "negatives": 15087,
+      "recall": 1.0,
+      "cands_per_gps": 4.641564083997103,
+      "elapsed_s": 1.831
+    },
+    {
+      "trip_id": "00000088",
+      "num_gps": 876,
+      "num_candidates": 12132,
+      "positives": 876,
+      "negatives": 11256,
+      "recall": 1.0,
+      "cands_per_gps": 13.849315068493151,
+      "elapsed_s": 0.175
+    },
+    {
+      "trip_id": "00000089",
+      "num_gps": 1228,
+      "num_candidates": 17080,
+      "positives": 1227,
+      "negatives": 15853,
+      "recall": 0.999185667752443,
+      "cands_per_gps": 13.908794788273616,
+      "elapsed_s": 0.283
+    },
+    {
+      "trip_id": "00000090",
+      "num_gps": 536,
+      "num_candidates": 6047,
+      "positives": 535,
+      "negatives": 5512,
+      "recall": 0.9981343283582089,
+      "cands_per_gps": 11.281716417910447,
+      "elapsed_s": 0.121
+    },
+    {
+      "trip_id": "00000092",
+      "num_gps": 7892,
+      "num_candidates": 69299,
+      "positives": 7892,
+      "negatives": 61407,
+      "recall": 1.0,
+      "cands_per_gps": 8.78091738469336,
+      "elapsed_s": 8.455
+    },
+    {
+      "trip_id": "00000093",
+      "num_gps": 1211,
+      "num_candidates": 15089,
+      "positives": 1174,
+      "negatives": 13915,
+      "recall": 0.9694467382328654,
+      "cands_per_gps": 12.459950454170107,
+      "elapsed_s": 0.86
+    },
+    {
+      "trip_id": "00000095",
+      "num_gps": 1551,
+      "num_candidates": 17255,
+      "positives": 1551,
+      "negatives": 15704,
+      "recall": 1.0,
+      "cands_per_gps": 11.1250805931657,
+      "elapsed_s": 0.424
+    },
+    {
+      "trip_id": "00000096",
+      "num_gps": 3271,
+      "num_candidates": 21991,
+      "positives": 3271,
+      "negatives": 18720,
+      "recall": 1.0,
+      "cands_per_gps": 6.723020483032712,
+      "elapsed_s": 1.221
+    },
+    {
+      "trip_id": "00000097",
+      "num_gps": 1740,
+      "num_candidates": 12995,
+      "positives": 1740,
+      "negatives": 11255,
+      "recall": 1.0,
+      "cands_per_gps": 7.468390804597701,
+      "elapsed_s": 0.802
+    },
+    {
+      "trip_id": "00000098",
+      "num_gps": 5584,
+      "num_candidates": 32388,
+      "positives": 5572,
+      "negatives": 26816,
+      "recall": 0.9978510028653295,
+      "cands_per_gps": 5.8001432664756445,
+      "elapsed_s": 3.865
+    },
+    {
+      "trip_id": "00000099",
+      "num_gps": 2322,
+      "num_candidates": 25687,
+      "positives": 2314,
+      "negatives": 23373,
+      "recall": 0.9965546942291128,
+      "cands_per_gps": 11.06244616709733,
+      "elapsed_s": 1.61
+    }
+  ]
+}

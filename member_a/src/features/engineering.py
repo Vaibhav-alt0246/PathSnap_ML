@@ -1,0 +1,285 @@
+"""Feature engineering engine for PathSnap.
+
+Extracts geometric, directional, kinematic, and topological features for candidate
+road segments without target leakage or dependency on ground-truth route labels.
+Preserves candidate row order and produces deterministic, fully populated numerical features.
+"""
+
+from typing import Optional, Tuple
+import numpy as np
+import pandas as pd
+
+from member_a.config.settings import (
+    MIN_SPEED_FOR_HEADING_MPS,
+    CANDIDATE_COLUMNS,
+    TARGET_COLUMN,
+)
+from member_a.src.data.loader import Trip
+from member_a.src.projection.projection import project_trip
+from member_a.src.features.schema import FEATURE_COLUMNS
+
+
+def _compute_compass_bearing(dx: np.ndarray, dy: np.ndarray) -> np.ndarray:
+    """Compute geographic compass bearing in degrees [0, 360) where 0 is North, 90 is East.
+
+    In UTM metric coordinates:
+    dx = Easting delta
+    dy = Northing delta
+    Bearing = atan2(dx, dy)
+    """
+    radians = np.arctan2(dx, dy)
+    degrees = np.degrees(radians)
+    return (degrees + 360.0) % 360.0
+
+
+def _compute_angular_diff(angle1_deg: np.ndarray, angle2_deg: np.ndarray) -> np.ndarray:
+    """Compute smallest absolute difference between two angles in degrees [0, 180]."""
+    diff = np.abs(angle1_deg - angle2_deg) % 360.0
+    return np.minimum(diff, 360.0 - diff)
+
+
+def _compute_trajectory_kinematics(
+    track_x: np.ndarray,
+    track_y: np.ndarray,
+    timestamps: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Compute smoothed kinematic context (heading, step distance, speed, acceleration) for GPS points.
+
+    Returns
+    -------
+    Tuple[np.ndarray, ...]
+        (headings_deg, step_dists_m, delta_t_s, speeds_mps, accels_mps2, is_low_speed)
+    """
+    n = len(track_x)
+    if n == 0:
+        empty = np.array([], dtype=float)
+        return empty, empty, empty, empty, empty, np.array([], dtype=int)
+
+    # GPS gap threshold: steps with dt > this are recording gaps, not movement
+    GPS_GAP_THRESHOLD_S = 60.0
+
+    # 1. Delta t
+    delta_t = np.ones(n, dtype=float)
+    if n > 1:
+        dt_raw = np.diff(timestamps)
+        delta_t[1:] = np.where(dt_raw > 1e-4, dt_raw, 1.0)
+        delta_t[0] = delta_t[1]
+
+    # 2. Step displacement from previous point
+    step_dist = np.zeros(n, dtype=float)
+    is_gap = np.zeros(n, dtype=bool)  # True at points following a large time gap
+    if n > 1:
+        step_dx = np.diff(track_x)
+        step_dy = np.diff(track_y)
+        raw_step = np.sqrt(step_dx * step_dx + step_dy * step_dy)
+        # Mark points following a GPS gap — displacement is meaningless
+        gap_mask = delta_t[1:] > GPS_GAP_THRESHOLD_S
+        step_dist[1:] = np.where(gap_mask, 0.0, raw_step)
+        step_dist[0] = step_dist[1]
+        is_gap[1:] = gap_mask
+        is_gap[0] = False
+
+    # 3. Instantaneous speed — zero out gap observations
+    speeds = np.where(is_gap, 0.0, step_dist / delta_t)
+
+    # 4. Acceleration — zero out points adjacent to gaps
+    accel = np.zeros(n, dtype=float)
+    if n > 1:
+        raw_accel = (speeds[1:] - speeds[:-1]) / delta_t[1:]
+        # Zero out acceleration at gap points and the point before a gap
+        gap_or_prev_gap = is_gap[1:] | is_gap[:-1]
+        accel[1:] = np.where(gap_or_prev_gap, 0.0, raw_accel)
+        accel[0] = accel[1]
+
+    # 5. Heading estimation using central differences
+    headings = np.zeros(n, dtype=float)
+    if n == 1:
+        headings[0] = 0.0
+    elif n == 2:
+        h = _compute_compass_bearing(np.array([track_x[1] - track_x[0]]), np.array([track_y[1] - track_y[0]]))
+        headings[0] = h[0]
+        headings[1] = h[0]
+    else:
+        # Central difference for interior points
+        cdx = np.zeros(n, dtype=float)
+        cdy = np.zeros(n, dtype=float)
+        cdx[0] = track_x[1] - track_x[0]
+        cdy[0] = track_y[1] - track_y[0]
+        cdx[-1] = track_x[-1] - track_x[-2]
+        cdy[-1] = track_y[-1] - track_y[-2]
+        cdx[1:-1] = track_x[2:] - track_x[:-2]
+        cdy[1:-1] = track_y[2:] - track_y[:-2]
+        headings = _compute_compass_bearing(cdx, cdy)
+
+    # 6. Low speed flag (speed < 0.5 m/s, step displacement < 0.5 m, or GPS gap)
+    is_low_speed = ((speeds < MIN_SPEED_FOR_HEADING_MPS) | (step_dist < 0.5) | is_gap).astype(int)
+
+    return headings, step_dist, delta_t, speeds, accel, is_low_speed
+
+
+def build_features(
+    trip: Trip,
+    candidates: pd.DataFrame,
+    override_epsg: Optional[int] = None,
+) -> pd.DataFrame:
+    """Build rich geometric, directional, kinematic, and topological features for candidates.
+
+    Works identically at prediction time and training time (does not require or use route labels).
+    Preserves exact candidate row ordering.
+
+    Parameters
+    ----------
+    trip : Trip
+        The loaded trip dataclass.
+    candidates : pd.DataFrame
+        Candidate road segments generated by `generate_candidates`.
+    override_epsg : Optional[int]
+        Optional manual EPSG code override.
+
+    Returns
+    -------
+    pd.DataFrame
+        Enriched DataFrame containing all candidate base columns, all engineered features
+        in FEATURE_COLUMNS, and the optional 'label' column if present in input candidates.
+    """
+    if candidates is None or len(candidates) == 0:
+        cols = list(candidates.columns) if candidates is not None else list(CANDIDATE_COLUMNS)
+        all_cols = list(dict.fromkeys(cols + FEATURE_COLUMNS))
+        return pd.DataFrame(columns=all_cols)
+
+    # Work on a copy preserving the exact initial row order
+    out_df = candidates.copy()
+    initial_index = out_df.index
+
+    # 1. Project trip to metric UTM space
+    proj_track, proj_nodes, epsg = project_trip(trip, override_epsg=override_epsg)
+
+    tx = proj_track["x_m"].to_numpy(dtype=float)
+    ty = proj_track["y_m"].to_numpy(dtype=float)
+    times = proj_track["timestamp"].to_numpy(dtype=float)
+
+    nx = proj_nodes["x_m"].to_numpy(dtype=float)
+    ny = proj_nodes["y_m"].to_numpy(dtype=float)
+
+    arcs_u = trip.arcs["u"].to_numpy(dtype=int)
+    arcs_v = trip.arcs["v"].to_numpy(dtype=int)
+
+    cand_pts = out_df["point_idx"].to_numpy(dtype=int)
+    cand_arcs = out_df["arc_id"].to_numpy(dtype=int)
+
+    # ----------------------------------------------------
+    # A. GEOMETRIC FEATURES
+    # ----------------------------------------------------
+    # Groupwise relative distance features per point_idx
+    min_dist_per_pt = out_df.groupby("point_idx")["distance_m"].transform("min").to_numpy(dtype=float)
+    dist_m = out_df["distance_m"].to_numpy(dtype=float)
+    out_df["distance_to_closest_cand"] = dist_m - min_dist_per_pt
+    # Clip ratio to 1000 — prevents extreme values when nearest candidate distance is ~0
+    out_df["distance_ratio_closest"] = np.clip(dist_m / (min_dist_per_pt + 1e-4), 0.0, 1000.0)
+
+    # Candidate rank (0 = closest)
+    out_df["dist_rank"] = (
+        out_df.groupby("point_idx")["distance_m"].rank(method="first", ascending=True) - 1.0
+    ).to_numpy(dtype=float)
+
+    # Candidate count per GPS observation
+    out_df["cand_count_for_point"] = (
+        out_df.groupby("point_idx")["distance_m"].transform("count").to_numpy(dtype=float)
+    )
+
+    # Distance to start and end nodes of candidate segment
+    frac = out_df["projection_fraction"].to_numpy(dtype=float)
+    seg_len = out_df["arc_length_m"].to_numpy(dtype=float)
+    out_df["dist_to_segment_start_m"] = frac * seg_len
+    out_df["dist_to_segment_end_m"] = (1.0 - frac) * seg_len
+
+    # ----------------------------------------------------
+    # B. KINEMATIC & TEMPORAL FEATURES (GPS trajectory level)
+    # ----------------------------------------------------
+    (
+        gps_headings,
+        step_dists,
+        delta_ts,
+        speeds,
+        accels,
+        low_speed_flags,
+    ) = _compute_trajectory_kinematics(tx, ty, times)
+
+    # Map trajectory kinematics to candidate observations via point_idx
+    cand_gps_headings = gps_headings[cand_pts]
+    cand_step_dists = step_dists[cand_pts]
+    cand_delta_ts = delta_ts[cand_pts]
+    cand_speeds = speeds[cand_pts]
+    cand_accels = accels[cand_pts]
+    cand_low_speed = low_speed_flags[cand_pts]
+
+    out_df["gps_delta_t_s"] = cand_delta_ts
+    out_df["gps_step_distance_m"] = cand_step_dists
+    out_df["gps_speed_mps"] = cand_speeds
+    out_df["gps_accel_mps2"] = cand_accels
+
+    mean_trip_speed = np.mean(speeds) if len(speeds) > 0 else 1.0
+    safe_mean_speed = mean_trip_speed if mean_trip_speed > 1e-3 else 1.0
+    out_df["speed_ratio_to_mean"] = cand_speeds / safe_mean_speed
+
+    # ----------------------------------------------------
+    # C. DIRECTIONAL FEATURES (GPS heading vs Candidate arc bearing)
+    # ----------------------------------------------------
+    u_cand = arcs_u[cand_arcs]
+    v_cand = arcs_v[cand_arcs]
+
+    arc_dx = nx[v_cand] - nx[u_cand]
+    arc_dy = ny[v_cand] - ny[u_cand]
+    road_bearings = _compute_compass_bearing(arc_dx, arc_dy)
+
+    angular_diffs = _compute_angular_diff(cand_gps_headings, road_bearings)
+    cos_sim = np.cos(np.radians(angular_diffs))
+
+    # Mask stationary / low speed points where heading is uninformative noise
+    is_low = cand_low_speed == 1
+    angular_diffs = np.where(is_low, 90.0, angular_diffs)
+    cos_sim = np.where(is_low, 0.0, cos_sim)
+    cand_gps_headings = np.where(is_low, 0.0, cand_gps_headings)
+
+    out_df["gps_heading_deg"] = cand_gps_headings
+    out_df["road_bearing_deg"] = road_bearings
+    out_df["heading_bearing_diff_deg"] = angular_diffs
+    out_df["heading_bearing_cos_sim"] = cos_sim
+    out_df["is_low_speed"] = cand_low_speed
+
+    # ----------------------------------------------------
+    # D. TOPOLOGICAL FEATURES (Network degrees & reverse twins)
+    # ----------------------------------------------------
+    num_nodes = len(proj_nodes)
+
+    # In-degree and Out-degree using fast bincount
+    in_degrees = np.bincount(arcs_v, minlength=num_nodes)
+    out_degrees = np.bincount(arcs_u, minlength=num_nodes)
+
+    out_df["u_in_degree"] = in_degrees[u_cand].astype(float)
+    out_df["u_out_degree"] = out_degrees[u_cand].astype(float)
+    out_df["v_in_degree"] = in_degrees[v_cand].astype(float)
+    out_df["v_out_degree"] = out_degrees[v_cand].astype(float)
+
+    # Reverse twin indicator: does arc v -> u exist in the network?
+    # Encode (u, v) pairs into 64-bit integer keys: (u << 32) | v
+    edge_keys = (arcs_u.astype(np.int64) << 32) | arcs_v.astype(np.int64)
+    edge_set = set(edge_keys)
+
+    cand_reverse_keys = (v_cand.astype(np.int64) << 32) | u_cand.astype(np.int64)
+    has_reverse = np.array([k in edge_set for k in cand_reverse_keys], dtype=int)
+    out_df["has_reverse_twin"] = has_reverse
+
+    # ----------------------------------------------------
+    # E. NUMERICAL QUALITY & SAFETY AUDIT
+    # ----------------------------------------------------
+    # Verify zero NaN or infinite values
+    for col in FEATURE_COLUMNS:
+        vals = out_df[col].to_numpy()
+        if np.any(np.isnan(vals)) or np.any(np.isinf(vals)):
+            out_df[col] = np.nan_to_num(vals, nan=0.0, posinf=999.0, neginf=-999.0)
+
+    # Ensure index and row order match the input candidates exactly
+    out_df.index = initial_index
+
+    return out_df
