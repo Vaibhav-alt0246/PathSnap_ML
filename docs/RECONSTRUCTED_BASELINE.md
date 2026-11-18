@@ -17,6 +17,25 @@ HistGradientBoostingClassifier(
 
 Grouped 5-fold validation was run by trip. The fold metrics are in `models/artifacts/reconstructed_baseline_grouped_metrics.csv`; their mean is approximately Top-1 0.844, log loss 0.436, and macro F1 0.777. These are new reconstruction results and are not historical-model results.
 
+## Evaluation separation
+
+The repository distinguishes four result groups:
+
+1. **Historical experiments:** earlier reports under `docs/experiments/` and `report/`; these are separate from the reconstructed baseline.
+2. **Reconstructed baseline grouped validation:** 80 training trips, 1,514,702 rows, zero skipped trips; mean Top-1 approximately `0.844`, mean log loss approximately `0.436`, and mean macro F1 approximately `0.777`.
+3. **Reconstructed baseline student-test:** all 10 student-test trips completed, with mean arc membership `0.5474`.
+4. **Reconstructed baseline evaluator-test:** the supplied `evaluator_test.zip` was extracted outside the repository and was not committed. All 10 evaluator trips completed:
+
+| Metric | Result |
+|---|---:|
+| Mean arc-set precision | 0.5396 |
+| Mean arc-set recall | 0.9318 |
+| Mean arc-set F1 | 0.6748 |
+| Mean LCS route recall | 0.9261 |
+| Mean processing time | 3.54 seconds |
+
+These evaluator values are reconstructed-model results, not historical evaluator metrics. Streamlit browser rendering was not directly exercised; API responses and generated map HTML were verified programmatically.
+
 Rebuild with:
 
 ```bash

@@ -3,9 +3,9 @@
 This experiment used the recovered Parquet dataset with SHA-256
 `72db0f90fb1cf19a34bc7e125c945b5ef72d11f4aba1c26bc8bb0e873543d3e4`, 24
 approved features, seed `42`, and identical 5-fold `GroupKFold` splits by
-`trip_id`. Outputs were written outside the repository to
-`/tmp/pathsnap-phase2-results` and the selected artifact to
-`/tmp/pathsnap-phase2-artifacts`.
+`trip_id`. The historical outputs and selected artifact were stored outside
+the repository and are separate from the reconstructed model under
+`models/artifacts/`.
 
 | Model | Top-1 mean | Top-1 std | Log loss | Macro F1 | Candidate accuracy | Candidate recall | Inference s/fold | Train s/fold |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -17,9 +17,8 @@ approved features, seed `42`, and identical 5-fold `GroupKFold` splits by
 
 HistGradientBoosting ranked first by the existing selection rule: observation
 Top-1 accuracy, then log loss, macro F1, fold stability, and inference time.
-This is a real held-out-trip comparison, not a synthetic test. It is not yet
-an end-to-end map-matching result because raw trip files and a trained-model
-inference pipeline are not available in the integration checkout.
+This is a historical held-out-trip comparison and is separate from the newly
+reconstructed baseline documented in `docs/RECONSTRUCTED_BASELINE.md`.
 
 The serialized artifact was reloaded in a fresh Python process. Predictions on
 the same 1,000-row sample matched exactly (`max absolute difference = 0.0`).

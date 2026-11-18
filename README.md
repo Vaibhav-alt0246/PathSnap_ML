@@ -82,9 +82,28 @@ python -m compileall -q api src ui tests
 pytest
 ```
 
-The available tests are contract/unit tests and API boundary tests. A full real-trip smoke test requires both a local dataset and a compatible trained model. The historical reference for trip `00000033` is 5,844 observations, 43,219 candidates, and 5,844 predictions; it is not claimed as reproduced unless that data/model pair is available locally.
+The available tests are contract/unit tests and API boundary tests. The current reconstructed model reproduced trip `00000033` with 5,844 observations, 43,219 candidates, and 5,844 predictions. Streamlit browser interaction was not directly exercised; backend responses and generated map HTML were verified programmatically.
 
-Tests cover the trip, graph, HMM, API contracts and training-route requirements. A real smoke run was executed on training trip `00000033`.
+Tests cover the trip, graph, HMM, API contracts, training-route requirements, grouped training, and artifact compatibility. A real smoke run was executed on training trip `00000033`.
+
+## Evaluation status
+
+Results are kept separate by provenance:
+
+1. **Historical experiments:** reports under `docs/experiments/` and `report/` preserve earlier results and are not results from the reconstructed artifact.
+2. **Reconstructed baseline grouped validation:** 80 training trips, 1,514,702 candidate rows, zero skipped trips; mean Top-1 approximately `0.844`, mean log loss approximately `0.436`, and mean macro F1 approximately `0.777`.
+3. **Reconstructed baseline student-test:** all 10 student-test trips completed; mean arc membership `0.5474`.
+4. **Reconstructed baseline evaluator-test:** the supplied 10-trip archive was extracted outside the repository and was not committed. All 10 trips completed successfully.
+
+| Metric | Reconstructed evaluator result |
+|---|---:|
+| Mean arc-set precision | 0.5396 |
+| Mean arc-set recall | 0.9318 |
+| Mean arc-set F1 | 0.6748 |
+| Mean LCS route recall | 0.9261 |
+| Mean processing time | 3.54 seconds |
+
+These reconstructed results must not be presented as recovery of the missing historical model, and no claim is made that HMM decoding improves every accuracy metric.
 
 ## Development workflow
 
