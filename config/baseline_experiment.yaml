@@ -1,0 +1,26 @@
+# PathSnap Member B — Baseline 5-Model GroupKFold Experiment Configuration
+# Populate with Member A's confirmed candidate table location and feature schema.
+
+data_path: null  # e.g., data/processed/candidate_table.parquet or candidate_table.csv
+
+features:
+  # To be populated from Member A's confirmed feature schema:
+  - distance_m
+  - projection_fraction
+  - arc_length_m
+
+target_column: label
+trip_column: trip_id
+observation_columns:
+  - trip_id
+  - point_idx
+
+cross_validation:
+  strategy: GroupKFold
+  n_splits: 5
+  groups: trip_id
+
+random_seed: 42
+
+output_dir: results
+artifacts_dir: artifacts
