@@ -39,3 +39,13 @@ def test_shortest_path_maps_back_to_arc_ids():
 def test_invalid_node_reference_is_rejected():
     with pytest.raises(ValueError, match="unknown node"):
         build_road_graph(trip([(0.0, 0.0)], [(0, 3)]))
+
+@pytest.mark.parametrize("endpoint", [1.5, float("nan"), float("inf"), "not-a-node"])
+def test_malformed_or_fractional_endpoint_is_rejected(endpoint):
+    with pytest.raises(ValueError, match="malformed"):
+        build_road_graph(trip([(0.0, 0.0), (0.001, 0.0)], [(0, endpoint)]))
+
+@pytest.mark.parametrize("endpoint", [1.0, "1", " 1 "])
+def test_integer_valued_endpoint_is_accepted(endpoint):
+    graph = build_road_graph(trip([(0.0, 0.0), (0.001, 0.0)], [(0, endpoint)]))
+    assert graph[0][1][0]["to_node"] == 1
