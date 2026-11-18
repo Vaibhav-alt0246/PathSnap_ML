@@ -1,14 +1,33 @@
+paths:
+  dataset_root: null
+  artifacts_dir: artifacts
+  results_dir: results
 dataset:
-  root: null
+  training_partition: train
+  student_test_partition: student_test
 candidate_generation:
   initial_radius_m: 50
-  fallback_radii_m: [100, 200, 500]
+  expansion_radii_m: [100, 200, 500]
+projection:
+  crs: null
+  metric_crs: null
+cross_validation:
+  groups: trip_id
+  folds: 5
 random_seed: 42
+models:
+  artifact_dir: artifacts/models
+logging:
+  level: INFO
 hmm:
   enabled: true
   transition_weight: 1.0
   emission_weight: 1.0
   max_transition_distance_m: null
+evaluation:
+  route_field: route
 api:
   host: 127.0.0.1
   port: 8000
+ui:
+  api_base_url: http://127.0.0.1:8000
