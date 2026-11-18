@@ -1,7 +1,7 @@
 # PathSnap model demonstration
 
-This demonstration loads the recovered training candidate table and the
-serialized HistGradientBoosting model. It scores a small deterministic sample
+This demonstration loads a generated training candidate table and the
+serialized reconstructed HistGradientBoosting model. It scores a small deterministic sample
 of real candidate rows and writes:
 
 - `outputs/candidate_predictions.csv`
@@ -21,8 +21,8 @@ Optional paths:
 
 ```bash
 python demo/demo_model_predictions.py \
-  --dataset /tmp/pathsnap-forensic-audit/member-a/member_a/results/training_candidates_features.parquet \
-  --model /tmp/pathsnap-phase2-artifacts/best_baseline_model.joblib \
+  --dataset /path/to/generated_training_features.parquet \
+  --model models/artifacts/hist_gradient_boosting_reconstructed_baseline.joblib \
   --sample-observations 12 \
   --output-dir demo/outputs
 ```

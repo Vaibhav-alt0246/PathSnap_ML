@@ -1,0 +1,42 @@
+{
+  "model_name": "hist_gradient_boosting_reconstructed_baseline",
+  "feature_columns": [
+    "distance_m",
+    "distance_to_closest_cand",
+    "distance_ratio_closest",
+    "dist_rank",
+    "cand_count_for_point",
+    "projection_fraction",
+    "dist_to_segment_start_m",
+    "dist_to_segment_end_m",
+    "arc_length_m",
+    "gps_heading_deg",
+    "road_bearing_deg",
+    "heading_bearing_diff_deg",
+    "heading_bearing_cos_sim",
+    "is_low_speed",
+    "gps_delta_t_s",
+    "gps_step_distance_m",
+    "gps_speed_mps",
+    "gps_accel_mps2",
+    "speed_ratio_to_mean",
+    "u_in_degree",
+    "u_out_degree",
+    "v_in_degree",
+    "v_out_degree",
+    "has_reverse_twin"
+  ],
+  "dataset_sha256": "fccdfbaeffd17ee7fd217e57bae027af58a97edb461cf9bbfa24d6484b81f8cf",
+  "training_date_utc": "2026-11-18T17:17:47.100425+00:00",
+  "training_trips": 80,
+  "training_rows": 1514702,
+  "parameters": {
+    "learning_rate": 0.05,
+    "max_iter": 120,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 20,
+    "l2_regularization": 0.1,
+    "random_state": 42
+  },
+  "provenance": "New reconstruction from local train partition; historical artifact was unavailable."
+}

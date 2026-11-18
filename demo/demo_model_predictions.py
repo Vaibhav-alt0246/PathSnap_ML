@@ -18,8 +18,7 @@ import pandas as pd
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 
 
-DEFAULT_DATASET = "/tmp/pathsnap-forensic-audit/member-a/member_a/results/training_candidates_features.parquet"
-DEFAULT_MODEL = "/tmp/pathsnap-phase2-artifacts/best_baseline_model.joblib"
+DEFAULT_MODEL = str(Path(__file__).parents[1] / "models/artifacts/hist_gradient_boosting_reconstructed_baseline.joblib")
 FEATURE_CONFIG = Path(__file__).parents[1] / "models/config/feature_columns.json"
 
 
@@ -80,7 +79,7 @@ def run_demo(dataset_path: str, model_path: str, output_dir: Path, sample_observ
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dataset", default=DEFAULT_DATASET)
+    parser.add_argument("--dataset", required=True, help="A generated candidate-feature parquet table")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--output-dir", type=Path, default=Path(__file__).parent / "outputs")
     parser.add_argument("--sample-observations", type=int, default=12)
