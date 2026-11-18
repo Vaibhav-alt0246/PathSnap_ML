@@ -1,0 +1,14 @@
+{
+  "training_trips": 80,
+  "observations": 208417,
+  "candidate_rows": 1514674,
+  "features": 24,
+  "class_distribution": {
+    "0": 1329213,
+    "1": 185461
+  },
+  "missing_values_total": 0,
+  "source_file": "/tmp/pathsnap-forensic-audit/member-a/member_a/results/training_candidates_features.parquet",
+  "source_size_bytes": 105898556,
+  "source_sha256": "72db0f90fb1cf19a34bc7e125c945b5ef72d11f4aba1c26bc8bb0e873543d3e4"
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "trip_id": "00000033",
+    "observations": 100,
+    "nodes": 3340,
+    "arcs": 6360,
+    "candidates": 1168,
+    "decode_seconds": 1.621,
+    "seconds_per_observation": 0.01621,
+    "peak_mb": 18.9,
+    "predictions": 100
+  },
+  {
+    "trip_id": "00000033",
+    "observations": 250,
+    "nodes": 3340,
+    "arcs": 6360,
+    "candidates": 2705,
+    "decode_seconds": 4.271,
+    "seconds_per_observation": 0.01708,
+    "peak_mb": 52.1,
+    "predictions": 250
+  },
+  {
+    "trip_id": "00000033",
+    "observations": 1000,
+    "nodes": 3340,
+    "arcs": 6360,
+    "candidates": 11143,
+    "decode_seconds": 8.696,
+    "seconds_per_observation": 0.0087,
+    "peak_mb": 68.0,
+    "predictions": 1000
+  }
+]

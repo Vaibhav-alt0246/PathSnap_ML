@@ -18,6 +18,7 @@ dependencies = [
     "optuna",
     "joblib",
     "fastapi",
+    "python-multipart",
     "uvicorn",
     "streamlit",
     "streamlit-folium",

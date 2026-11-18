@@ -21,3 +21,11 @@ results/*
 .idea/
 .DS_Store
 Thumbs.db
+
+# Generated evaluation candidates, per-trip predictions, and interactive maps.
+report/evaluation/*_oof_predictions.csv
+report/evaluation/oof_candidates_*.csv
+report/evaluation/student_test_predictions/
+report/maps/*.html
+report/review/*.html
+report/performance_improvement/candidate_radius_experiment/recall_*.csv

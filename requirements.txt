@@ -8,6 +8,7 @@ shapely
 optuna
 joblib
 fastapi
+python-multipart
 uvicorn
 streamlit
 streamlit-folium

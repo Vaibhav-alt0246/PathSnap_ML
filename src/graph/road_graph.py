@@ -7,7 +7,7 @@ import networkx as nx
 import pandas as pd
 from pyproj import CRS, Transformer
 from shapely.geometry import LineString
-from src.data.loader import TripData
+from src.data.loader import TripData, normalize_trip
 
 _INTEGER_TEXT = re.compile(r"^[+-]?\d+$")
 
@@ -46,6 +46,7 @@ def build_road_graph(trip: TripData) -> nx.MultiDiGraph:
     A local azimuthal-equidistant projection provides metre-based lengths for
     one trip. The training/evaluation-only ``route`` field is ignored.
     """
+    trip = normalize_trip(trip)
     if not {"longitude", "latitude"}.issubset(trip.nodes.columns):
         raise ValueError("nodes must contain longitude and latitude columns")
     if not {"from_node", "to_node"}.issubset(trip.arcs.columns):

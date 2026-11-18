@@ -1,0 +1,25 @@
+feature_name,description
+distance_m,Perpendicular GPS-to-candidate segment distance in metres.
+distance_to_closest_cand,Candidate distance minus the closest candidate distance.
+distance_ratio_closest,Candidate distance divided by closest distance with stabilizer and clip.
+dist_rank,Distance rank within observation candidates; zero is closest.
+cand_count_for_point,Number of candidates retained for the observation.
+projection_fraction,Clamped fractional position of GPS projection along the segment.
+dist_to_segment_start_m,Projected distance from segment start in metres.
+dist_to_segment_end_m,Projected distance from segment end in metres.
+arc_length_m,Metric length of the candidate road arc.
+gps_heading_deg,GPS trajectory compass heading in degrees.
+road_bearing_deg,Directed candidate road bearing in degrees.
+heading_bearing_diff_deg,Smallest absolute GPS-heading/road-bearing difference.
+heading_bearing_cos_sim,Cosine similarity of GPS heading and road bearing.
+is_low_speed,"Indicator for stationary, low-speed, or gap observations."
+gps_delta_t_s,Elapsed time from previous GPS observation.
+gps_step_distance_m,Metric displacement from previous GPS observation.
+gps_speed_mps,GPS step speed in metres per second.
+gps_accel_mps2,Change in GPS speed per second.
+speed_ratio_to_mean,GPS speed divided by trip mean speed.
+u_in_degree,Incoming directed-arc count at candidate start node.
+u_out_degree,Outgoing directed-arc count at candidate start node.
+v_in_degree,Incoming directed-arc count at candidate end node.
+v_out_degree,Outgoing directed-arc count at candidate end node.
+has_reverse_twin,Indicator that the reverse directed arc exists.

@@ -1,0 +1,12 @@
+,mean
+fold,2.0
+observations,2605.2125
+candidate_rows,18933.775
+classifier_top1_route_membership,0.9755980469374826
+hmm_top1_route_membership,0.5557419230592257
+classifier_route_similarity,0.0007494795960230813
+hmm_route_similarity,0.00042036742687124814
+classifier_continuity,0.33261143877837374
+hmm_continuity,0.924115523853408
+hmm_arc_count,2605.2125
+reference_arc_count,391.7

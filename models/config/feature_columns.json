@@ -1,0 +1,37 @@
+{
+  "dataset_sha256": "72db0f90fb1cf19a34bc7e125c945b5ef72d11f4aba1c26bc8bb0e873543d3e4",
+  "target_column": "label",
+  "group_column": "trip_id",
+  "observation_columns": ["trip_id", "point_idx"],
+  "excluded_columns": {
+    "identifiers": ["trip_id", "point_idx", "arc_id"],
+    "target": ["label"],
+    "absolute_coordinates": ["projected_x", "projected_y"]
+  },
+  "feature_columns": [
+    "distance_m",
+    "distance_to_closest_cand",
+    "distance_ratio_closest",
+    "dist_rank",
+    "cand_count_for_point",
+    "projection_fraction",
+    "dist_to_segment_start_m",
+    "dist_to_segment_end_m",
+    "arc_length_m",
+    "gps_heading_deg",
+    "road_bearing_deg",
+    "heading_bearing_diff_deg",
+    "heading_bearing_cos_sim",
+    "is_low_speed",
+    "gps_delta_t_s",
+    "gps_step_distance_m",
+    "gps_speed_mps",
+    "gps_accel_mps2",
+    "speed_ratio_to_mean",
+    "u_in_degree",
+    "u_out_degree",
+    "v_in_degree",
+    "v_out_degree",
+    "has_reverse_twin"
+  ]
+}

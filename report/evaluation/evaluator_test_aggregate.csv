@@ -1,0 +1,10 @@
+,mean
+trip_id,51.4
+status,200.0
+processing_seconds,3.6852795749990035
+arc_set_precision,0.5324590415674532
+arc_set_recall,0.9119159276259271
+arc_set_f1,0.6638876202922659
+lcs_route_recall,0.9059418107043917
+predicted_arc_count,1967.4
+reference_arc_count,357.1
