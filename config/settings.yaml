@@ -1,0 +1,14 @@
+dataset:
+  root: null
+candidate_generation:
+  initial_radius_m: 50
+  fallback_radii_m: [100, 200, 500]
+random_seed: 42
+hmm:
+  enabled: true
+  transition_weight: 1.0
+  emission_weight: 1.0
+  max_transition_distance_m: null
+api:
+  host: 127.0.0.1
+  port: 8000
